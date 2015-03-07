@@ -25,5 +25,5 @@ Vagrant::Config.run do |config|
 	config.vm.share_folder "v-data", "/vagrant_data", "./data"
 
 	# Enable provisioning with a shell script.
-	config.vm.provision :shell, :path => "sh/main.sh"
+	config.vm.provision :shell, :path => "install.sh"
 end
