@@ -1,5 +1,11 @@
+#!/usr/bin/env bash
+
 # Need to fix locale so that Postgres creates databases in UTF-8
-cp -p /vagrant_data/etc-bash.bashrc /etc/bash.bashrc
+
+sudo apt-get install language-pack-UTF-8
+
+sudo locale-gen UTF-8
+
 locale-gen en_GB.UTF-8
 dpkg-reconfigure locales
 

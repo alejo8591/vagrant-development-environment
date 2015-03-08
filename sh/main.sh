@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to set up dependencies for Django on Vagrant.
 
@@ -18,16 +18,16 @@ echo "127.0.0.1 dev" >> /etc/hosts
 hostname dev
 
 # Language Setup
-/vagrant/sh/language.sh
+sh /vagrant/sh/language.sh
 
 # Installing dependencies
-/vagrant/sh/core.sh
+sh /vagrant/sh/core.sh
 
 # Installing Node
-/vagrant/sh/node.sh
+sh /vagrant/sh/node.sh
 
 # Installing Node
-/vagrant/sh/node.sh
+sh /vagrant/sh/node.sh
 
 # Installing oh-my-zsh
-/vagrant/sh/zsh.sh
+sh /vagrant/sh/zsh.sh

@@ -1,7 +1,7 @@
 # vagrant-development-environment
 Vagrant configuration for a base box for Django and Node.JS development
 
-Provisions a clean Ubuntu 12.04 64-bit server instance with all needed Django and Node.js development tools (Python with pyenv 3.4.x, Oh-my-Zsh, Node.js, git); services (GitHub, Travis-CI).
+Provisions a clean Ubuntu 14.04 64-bit server instance with all needed Django and Node.js development tools (Python with pyenv 3.4.x, Oh-my-Zsh, Node.js, git); services (GitHub, Travis-CI).
 
 ## Install Vagrant & VirtualBox
 
