@@ -23,7 +23,7 @@ elif [[ $NUMBER_OF_ARG -eq 2 ]]; then
 else
     # Default Nodejs version when nothing is given
     NODEJS_VERSION=latest
-    GITHUB_URL="https://raw.githubusercontent.com/fideloper/Vaprobash/master"
+    GITHUB_URL=""
 fi
 
 # True, if Node is not installed
@@ -32,12 +32,37 @@ if [[ $NODE_IS_INSTALLED -ne 0 ]]; then
     echo ">>> Installing Node Version Manager"
 
     # Install NVM
-    curl --silent -L $GITHUB_URL/helpers/nvm_install.sh | sh
+    NVM_DIR="/home/vagrant/.nvm"
+
+    if ! hash git 2>/dev/null; then
+      echo >&2 "!!! You need to install git"
+      exit 1
+    fi
+
+    if [ -d "$NVM_DIR" ]; then
+      echo ">>> NVM is already installed in $NVM_DIR, trying to update"
+      echo -ne "\r=> "
+      cd $NVM_DIR && git pull
+    else
+      # Cloning to $NVM_DIR
+      git clone https://github.com/creationix/nvm.git $NVM_DIR
+    fi
+
+    PROFILE="/home/vagrant/.profile"
+    SOURCE_STR="\n# This loads NVM\n[[ -s /home/vagrant/.nvm/nvm.sh ]] && . /home/vagrant/.nvm/nvm.sh"
+
+    # Append NVM script to ~/.profile
+    if ! grep -qsc 'nvm.sh' $PROFILE; then
+      echo ">>> Appending source string to $PROFILE"
+      printf "$SOURCE_STR" >> "$PROFILE"
+    else
+      echo ">>> Source string already in $PROFILE"
+    fi
 
     # Re-source user profiles
     # if they exist
-    if [[ -f "/home/vagrant/.bashrc" ]]; then
-        . /home/vagrant/.bashrc
+    if [[ -f "/home/vagrant/.profile" ]]; then
+        . /home/vagrant/.profile
     fi
 
     echo ">>> Installing Node.js version $NODEJS_VERSION"
@@ -45,7 +70,7 @@ if [[ $NODE_IS_INSTALLED -ne 0 ]]; then
 
     # If set to latest, get the current node version from the home page
     if [[ $NODEJS_VERSION -eq "latest" ]]; then
-        NODEJS_VERSION=`curl 'nodejs.org' | grep 'Current Version' | awk '{ print $4 }' | awk -F\< '{ print $1 }'`
+        NODEJS_VERSION=`curl 'https://nodejs.org' | grep 'Current Version' | awk '{ print $4 }' | awk -F\< '{ print $1 }'`
     fi
 
     # Install Node
@@ -61,14 +86,13 @@ if [[ $NODE_IS_INSTALLED -ne 0 ]]; then
     # Change where npm global packages are located
     npm config set prefix /home/vagrant/npm
 
-    if [[ -f "/home/vagrant/.bashrc" ]]; then
-        # Add new NPM Global Packages location to PATH (.bashrc)
-        printf "\n# Add new NPM global packages location to PATH\n%s" 'export PATH=$PATH:~/npm/bin' >> /home/vagrant/.bashrc
+    if [[ -f "/home/vagrant/.profile" ]]; then
+        # Add new NPM Global Packages location to PATH (.profile)
+        printf "\n# Add new NPM global packages location to PATH\n%s" 'export PATH=$PATH:~/npm/bin' >> /home/vagrant/.profile
 
-        # Add new NPM root to NODE_PATH (.bashrc)
-        printf "\n# Add the new NPM root to NODE_PATH\n%s" 'export NODE_PATH=$NODE_PATH:~/npm/lib/node_modules' >> /home/vagrant/.bashrc
+        # Add new NPM root to NODE_PATH (.profile)
+        printf "\n# Add the new NPM root to NODE_PATH\n%s" 'export NODE_PATH=$NODE_PATH:~/npm/lib/node_modules' >> /home/vagrant/.profile
     fi
-
 fi
 
 # Install (optional) Global Node Packages
