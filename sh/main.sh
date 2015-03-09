@@ -17,17 +17,17 @@ echo "127.0.0.1 dev" >> /etc/hosts
 # Use hostname command so that the new hostname takes effect immediately without a restart:
 hostname dev
 
-# Language Setup
-sh /vagrant/sh/language.sh
-
 # Installing dependencies
 sh /vagrant/sh/core.sh
 
-# Installing Node
-sh /vagrant/sh/node.sh
-
-# Installing Node
-sh /vagrant/sh/node.sh
-
 # Installing oh-my-zsh
-sh /vagrant/sh/zsh.sh
+# sh /vagrant/sh/zsh.sh
+
+# Installing Node
+sh /vagrant/sh/node.sh
+
+# Language Setup
+# sh /vagrant/sh/language.sh
+
+# Installing Node
+# sh /vagrant/sh/clean.sh

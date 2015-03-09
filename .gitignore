@@ -4,6 +4,8 @@
 ### Vagrant ###
 .vagrant/
 
+data/
+
 ### Node ###
 # Logs
 logs
